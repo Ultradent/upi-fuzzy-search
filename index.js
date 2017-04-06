@@ -131,7 +131,7 @@ export function sortResultSet( results, prop, query, limit ) {
         return results.slice( 0, limit );
     }
 
-    return reuslts;
+    return results;
 }
 
 /**
