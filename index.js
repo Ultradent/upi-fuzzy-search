@@ -113,7 +113,7 @@ export const buildFuzzySearchPattern = memoize( function fuzzySearchPattern( q )
  * @param {String} query - search term
  * @returns {Array}
  */
-export function sortResultSet( results, prop, query, limit=20 ) {
+export function sortResultSet( results, prop, query, limit ) {
     // prop would be object prop e.g. "title"
     // jaro distance
     results = sortBy( results, function( item ) {
@@ -127,7 +127,11 @@ export function sortResultSet( results, prop, query, limit=20 ) {
     } );
 
     // slice to improve performance for sorting and DOM rendering
-    return results.slice( 0, limit );
+    if( limit ) {
+        return results.slice( 0, limit );
+    }
+
+    return reuslts;
 }
 
 /**
