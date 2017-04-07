@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run build",
-    "build": "babel source --presets babel-preset-es2015 --out-dir distribution"
+    "build": "npm run clean-dist && babel source --presets babel-preset-es2015 --out-dir distribution",
+    "clean-dist": "rimraf ./distribution && mkdir distribution"
   },
   "author": "troy watt",
   "license": "ISC",
@@ -21,6 +22,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
-    "babel-preset-es2015": "^6.24.0"
+    "babel-preset-es2015": "^6.24.0",
+    "rimraf": "^2.6.1"
   }
 }
