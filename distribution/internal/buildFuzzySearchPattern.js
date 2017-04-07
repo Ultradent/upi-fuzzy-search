@@ -4,9 +4,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _memoizee = require('memoizee');
+var _memoize = require('./memoize');
 
-var _memoizee2 = _interopRequireDefault(_memoizee);
+var _memoize2 = _interopRequireDefault(_memoize);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19,7 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {String} q - query for search criteria
  * @returns {RegExp}
  */
-var buildFuzzySearchPattern = (0, _memoizee2.default)(function fuzzySearchPattern(q) {
+var buildFuzzySearchPattern = (0, _memoize2.default)(function fuzzySearchPattern(q) {
     // resource - fuzzy search: http://stackoverflow.com/questions/2891514/algorithms-for-fuzzy-matching-strings
     var words = q.split(' '),
         pattern = [],

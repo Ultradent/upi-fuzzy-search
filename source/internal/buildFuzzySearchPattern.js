@@ -1,4 +1,4 @@
-import memoize from 'memoizee';
+import memoize from './memoize';
 
 /**
  * Build a dynamic regular expression based on current query by exploding each character and allowing

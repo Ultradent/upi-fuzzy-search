@@ -1,1 +1,10 @@
+node_modules
 source
+experiments
+benchmark
+.gitignore
+.npmignore
+*.yml
+build
+src
+test
