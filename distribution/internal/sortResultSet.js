@@ -8,7 +8,7 @@ var _lodash = require('lodash.sortby');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
-var _jaroWinkler = require('talisman/metrics/distance/jaro-winkler');
+var _jaroWinkler = require('./jaro-winkler');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 

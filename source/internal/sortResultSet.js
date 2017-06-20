@@ -1,5 +1,5 @@
 import sortBy from 'lodash.sortby';
-import { distance } from 'talisman/metrics/distance/jaro-winkler';
+import { distance } from './jaro-winkler';
 
 /**
  * Logically sort result set using jaro winkler distance score of 0 - 1 e.g.(exact - no match)
