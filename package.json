@@ -1,6 +1,6 @@
 {
-  "name": "upi-fuzzy-search",
-  "version": "1.2.0",
+  "name": "@ultradent/upi-fuzzy-search",
+  "version": "1.2.1",
   "description": "simple search utility for creating fuzzy search contexts from a defined collection that can then be queried by properties",
   "main": "distribution/index.js",
   "repository": {
@@ -11,7 +11,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublish": "npm run build",
     "build": "npm run clean-dist && babel source --presets babel-preset-es2015 --out-dir distribution",
-    "clean-dist": "rimraf ./distribution && mkdir distribution"
+    "clean-dist": "rimraf ./distribution && mkdir distribution",
+    "predist": "npm run build",
+    "publish:patch": "npm run prepublish && npm version patch && npm publish --access=public",
+    "publish:minor": "npm run prepublish && npm version minor && npm publish --access=public"
   },
   "author": "troy watt",
   "license": "ISC",
