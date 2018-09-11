@@ -19,7 +19,8 @@
   "author": "troy watt",
   "license": "ISC",
   "dependencies": {
-    "lodash.sortby": "^4.7.0"
+    "lodash.sortby": "^4.7.0",
+    "ramda": "^0.25.0"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",

@@ -10,18 +10,29 @@ import sortResultSet from './internal/sortResultSet';
  * @param {Number} limit = limits the number of results returned @default all
  * @returns {Function} -
  */
-function createSearchContext( model, props = [], limit ) {
+function createSearchContext ( model, props = [], limit ) {
 
     let _$cache = {};
+    let _ctxFilters = [];
 
-    model = sortBy( model, function sortByName( item ) {
+    model = sortBy( model, function sortByName ( item ) {
         return item[props[0]];
-    });
+    } );
 
     return {
-        query: function search( q ) {
+        setFilters ( filters ) {
+            if ( !filters ) {
+                return null;
+            }
+
+            let _filters = Array.isArray( filters ) ? filters : [filters];
+            // ensure only predicates are accepted
+            _ctxFilters = _filters.filter( item => item instanceof Function );
+        },
+
+        query: function search ( q ) {
             const
-                query = q.toLowerCase( ),
+                query = q.toLowerCase(),
                 queryPattern = buildFuzzySearchPattern( query ),
                 prevQuery = query.substr( 0, query.length - 1 );
 
@@ -32,9 +43,9 @@ function createSearchContext( model, props = [], limit ) {
              current filter context to return next query input from
              If for some reason the prev results aren't cached the entire catalog will be passed as filter context
              */
-            const resultSets = ( _$cache[query] !== undefined )
+            const resultSets = (_$cache[query] !== undefined)
                 ? _$cache[query]
-                : _$cache[query] = filterResultSet( _$cache[prevQuery] || model, queryPattern, props );
+                : _$cache[query] = filterResultSet( _$cache[prevQuery] || model, queryPattern, props, _ctxFilters );
 
             // console.log( '"' + query + '"', queryPattern );
             return sortResultSet( resultSets, props[0], query, limit );
@@ -42,4 +53,4 @@ function createSearchContext( model, props = [], limit ) {
     }
 }
 
-export { createSearchContext }
+export {createSearchContext}

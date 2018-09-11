@@ -23,6 +23,8 @@ var _sortResultSet2 = _interopRequireDefault(_sortResultSet);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+console.log('LOAD UPI_FUZZY_SEARCH V2');
+
 /**
  * HOF the return search context for a given collection
  * @param {Array} model - eg collection of sku models
@@ -41,7 +43,23 @@ function createSearchContext(model) {
         return item[props[0]];
     });
 
+    var ctxFilters = [];
+
     return {
+        setFilters: function setFilters(filters) {
+            if (!filters) {
+                return null;
+            }
+
+            var _filters = Array.isArray(filters) ? filters : [filters];
+
+            // ensure only predicates are accepted
+            ctxFilters = _filters.filter(function (item) {
+                return item instanceof Function;
+            });
+        },
+
+
         query: function search(q) {
             var query = q.toLowerCase(),
                 queryPattern = (0, _buildFuzzySearchPattern2.default)(query),
@@ -54,7 +72,7 @@ function createSearchContext(model) {
              current filter context to return next query input from
              If for some reason the prev results aren't cached the entire catalog will be passed as filter context
              */
-            var resultSets = _$cache[query] !== undefined ? _$cache[query] : _$cache[query] = (0, _filterResultSet2.default)(_$cache[prevQuery] || model, queryPattern, props);
+            var resultSets = _$cache[query] !== undefined ? _$cache[query] : _$cache[query] = (0, _filterResultSet2.default)(_$cache[prevQuery] || model, queryPattern, props, ctxFilters);
 
             // console.log( '"' + query + '"', queryPattern );
             return (0, _sortResultSet2.default)(resultSets, props[0], query, limit);
