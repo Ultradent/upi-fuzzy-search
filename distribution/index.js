@@ -39,8 +39,6 @@ var _sortResultSet2 = _interopRequireDefault(_sortResultSet);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.warn('@local upi-fuzzy-search@1.4.0-16');
-
 /**
  * HOF the return search context for a given collection
  * @param {Array} initialModel - eg collection of sku models
