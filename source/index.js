@@ -1,17 +1,13 @@
-import sortBy from 'lodash.sortby';
+import compose from 'ramda/src/compose';
+import prop from 'ramda/src/prop';
+import sortBy from 'ramda/src/sortBy';
+import filter from 'ramda/src/filter';
 import allPass from 'ramda/src/allPass';
 import buildFuzzySearchPattern from './internal/buildFuzzySearchPattern';
 import filterResultSet from './internal/filterResultSet';
 import sortResultSet from './internal/sortResultSet';
 
-function updateModel ( model, filters ) {
-    if ( filters ) {
-        model = model.filter( allPass( filters ) )
-    }
-    return sortBy( model, function sortByName ( item ) {
-        return item[props[0]];
-    } );
-}
+console.warn( '@local upi-fuzzy-search@1.4.0-11' );
 
 /**
  * HOF the return search context for a given collection
@@ -21,10 +17,12 @@ function updateModel ( model, filters ) {
  * @returns {Function} -
  */
 function createSearchContext ( initialModel, props = [], limit ) {
+    const sortByFirstProp = sortBy( prop( props[0] ) );
+    const composeFilters = compose( filter, allPass );
 
     let _$cache = {};
-    let _ctxFilters = [];
-    let _model = updateModel( initialModel );
+    let _modelSorted = sortByFirstProp( initialModel );
+    let _model = _modelSorted;
 
     return {
         setFilters ( filters ) {
@@ -35,10 +33,10 @@ function createSearchContext ( initialModel, props = [], limit ) {
             const _filters = Array.isArray( filters ) ? filters : [filters];
             // ensure only predicates are accepted
             const validatedFilters = _filters.filter( item => item instanceof Function );
+            const applyFilters = composeFilters( validatedFilters );
 
-            // update model
-            _model = updateModel( initialModel, validatedFilters );
-            // reset cache
+            // update model / clear cache
+            _model = applyFilters( _modelSorted );
             _$cache = {};
         },
 
@@ -63,6 +61,6 @@ function createSearchContext ( initialModel, props = [], limit ) {
             return sortResultSet( resultSets, props[0], query, limit );
         }
     }
-}
+};
 
 export {createSearchContext}
