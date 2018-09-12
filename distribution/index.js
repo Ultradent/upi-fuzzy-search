@@ -39,7 +39,7 @@ var _sortResultSet2 = _interopRequireDefault(_sortResultSet);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.warn('@local upi-fuzzy-search@1.4.0-11');
+console.warn('@local upi-fuzzy-search@1.4.0-16');
 
 /**
  * HOF the return search context for a given collection
@@ -72,13 +72,8 @@ function createSearchContext(initialModel) {
             });
             var applyFilters = composeFilters(validatedFilters);
 
+            // update model / clear cache
             _model = applyFilters(_modelSorted);
-            // update model
-            // _model = compose(
-            //     applyFilters( validatedFilters ),
-            //     sortByFirstProp
-            // )( initialModel );
-            // reset cache
             _$cache = {};
         },
 

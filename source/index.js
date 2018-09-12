@@ -7,8 +7,6 @@ import buildFuzzySearchPattern from './internal/buildFuzzySearchPattern';
 import filterResultSet from './internal/filterResultSet';
 import sortResultSet from './internal/sortResultSet';
 
-console.warn( '@local upi-fuzzy-search@1.4.0-11' );
-
 /**
  * HOF the return search context for a given collection
  * @param {Array} initialModel - eg collection of sku models
