@@ -1,23 +1,30 @@
 import sortBy from 'lodash.sortby';
+import allPass from 'ramda/src/allPass';
 import buildFuzzySearchPattern from './internal/buildFuzzySearchPattern';
 import filterResultSet from './internal/filterResultSet';
 import sortResultSet from './internal/sortResultSet';
 
+function updateModel ( model, filters ) {
+    if ( filters ) {
+        model = model.filter( allPass( filters ) )
+    }
+    return sortBy( model, function sortByName ( item ) {
+        return item[props[0]];
+    } );
+}
+
 /**
  * HOF the return search context for a given collection
- * @param {Array} model - eg collection of sku models
+ * @param {Array} initialModel - eg collection of sku models
  * @param {Array} props - props to query from, first prop determines sort criteria eg 'sku' or 'metadata'
  * @param {Number} limit = limits the number of results returned @default all
  * @returns {Function} -
  */
-function createSearchContext ( model, props = [], limit ) {
+function createSearchContext ( initialModel, props = [], limit ) {
 
     let _$cache = {};
     let _ctxFilters = [];
-
-    model = sortBy( model, function sortByName ( item ) {
-        return item[props[0]];
-    } );
+    let _model = updateModel( initialModel );
 
     return {
         setFilters ( filters ) {
@@ -25,9 +32,14 @@ function createSearchContext ( model, props = [], limit ) {
                 return null;
             }
 
-            let _filters = Array.isArray( filters ) ? filters : [filters];
+            const _filters = Array.isArray( filters ) ? filters : [filters];
             // ensure only predicates are accepted
-            _ctxFilters = _filters.filter( item => item instanceof Function );
+            const validatedFilters = _filters.filter( item => item instanceof Function );
+
+            // update model
+            _model = updateModel( initialModel, validatedFilters );
+            // reset cache
+            _$cache = {};
         },
 
         query: function search ( q ) {
@@ -45,7 +57,7 @@ function createSearchContext ( model, props = [], limit ) {
              */
             const resultSets = (_$cache[query] !== undefined)
                 ? _$cache[query]
-                : _$cache[query] = filterResultSet( _$cache[prevQuery] || model, queryPattern, props, _ctxFilters );
+                : _$cache[query] = filterResultSet( _$cache[prevQuery] || _model, queryPattern, props );
 
             // console.log( '"' + query + '"', queryPattern );
             return sortResultSet( resultSets, props[0], query, limit );

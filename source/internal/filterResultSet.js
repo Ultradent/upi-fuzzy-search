@@ -1,4 +1,3 @@
-import allPass from 'ramda/src/allPass';
 
 /**
  * Filter results set by given criteria (prop)
@@ -20,12 +19,10 @@ const matchInQuery = ( props, pattern ) => item => {
     return criteria.trim().match( pattern );
 };
 
-function filterResultSet ( results, pattern, props = [], filters = [] ) {
+function filterResultSet ( results, pattern, props = [] ) {
     const isMatch = matchInQuery( props, pattern );
 
-    return results.filter(
-        allPass( [isMatch].concat( filters ) )
-    );
+    return results.filter( isMatch );
 }
 
 export default filterResultSet;
