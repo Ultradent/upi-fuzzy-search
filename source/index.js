@@ -56,7 +56,10 @@ function createSearchContext ( initialModel, props = [], limit ) {
                 : _$cache[query] = filterResultSet( _$cache[prevQuery] || _model, queryPattern, props );
 
             // console.log( '"' + query + '"', queryPattern );
-            return sortResultSet( resultSets, props[0], query, limit );
+            return {
+                results: sortResultSet( resultSets, props[0], query, limit ),
+                queryPattern
+            };
         }
     }
 };

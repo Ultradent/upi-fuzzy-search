@@ -14,7 +14,8 @@
     "clean-dist": "rimraf ./distribution && mkdir distribution",
     "predist": "npm run build",
     "publish:patch": "npm run prepublish && npm version patch && npm publish --access=public",
-    "publish:minor": "npm run prepublish && npm version minor && npm publish --access=public"
+    "publish:minor": "npm run prepublish && npm version minor && npm publish --access=public",
+    "publish:major": "npm run prepublish && npm version major && npm publish --access=public"
   },
   "author": "troy watt",
   "license": "ISC",
