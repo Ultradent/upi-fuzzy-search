@@ -91,7 +91,10 @@ function createSearchContext(initialModel) {
             var resultSets = _$cache[query] !== undefined ? _$cache[query] : _$cache[query] = (0, _filterResultSet2.default)(_$cache[prevQuery] || _model, queryPattern, props);
 
             // console.log( '"' + query + '"', queryPattern );
-            return (0, _sortResultSet2.default)(resultSets, props[0], query, limit);
+            return {
+                results: (0, _sortResultSet2.default)(resultSets, props[0], query, limit),
+                queryPattern: queryPattern
+            };
         }
     };
 };
