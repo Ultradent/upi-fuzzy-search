@@ -11,10 +11,9 @@ import sortResultSet from './internal/sortResultSet';
  * HOF the return search context for a given collection
  * @param {Array} initialModel - eg collection of sku models
  * @param {Array} props - props to query from, first prop determines sort criteria eg 'sku' or 'metadata'
- * @param {Number} limit = limits the number of results returned @default all
  * @returns {Function} -
  */
-function createSearchContext ( initialModel, props = [], limit ) {
+function createSearchContext ( initialModel, props = [] ) {
     const sortByFirstProp = sortBy( prop( props[0] ) );
     const composeFilters = compose( filter, allPass );
 
@@ -56,8 +55,11 @@ function createSearchContext ( initialModel, props = [], limit ) {
                 : _$cache[query] = filterResultSet( _$cache[prevQuery] || _model, queryPattern, props );
 
             // console.log( '"' + query + '"', queryPattern );
+            const results = sortResultSet( resultSets, props[0], query );
+
             return {
-                results: sortResultSet( resultSets, props[0], query, limit ),
+                results,
+                resultCount: results.length || 0,
                 queryPattern
             };
         }

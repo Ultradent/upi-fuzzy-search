@@ -43,12 +43,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * HOF the return search context for a given collection
  * @param {Array} initialModel - eg collection of sku models
  * @param {Array} props - props to query from, first prop determines sort criteria eg 'sku' or 'metadata'
- * @param {Number} limit = limits the number of results returned @default all
  * @returns {Function} -
  */
 function createSearchContext(initialModel) {
     var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-    var limit = arguments[2];
 
     var sortByFirstProp = (0, _sortBy2.default)((0, _prop2.default)(props[0]));
     var composeFilters = (0, _compose2.default)(_filter2.default, _allPass2.default);
@@ -91,8 +89,11 @@ function createSearchContext(initialModel) {
             var resultSets = _$cache[query] !== undefined ? _$cache[query] : _$cache[query] = (0, _filterResultSet2.default)(_$cache[prevQuery] || _model, queryPattern, props);
 
             // console.log( '"' + query + '"', queryPattern );
+            var results = (0, _sortResultSet2.default)(resultSets, props[0], query);
+
             return {
-                results: (0, _sortResultSet2.default)(resultSets, props[0], query, limit),
+                results: results,
+                resultCount: results.length || 0,
                 queryPattern: queryPattern
             };
         }

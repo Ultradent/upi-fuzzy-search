@@ -23,23 +23,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @param {String} query - search term
  * @returns {Array}
  */
-function sortResultSet(results, prop, query, limit) {
+function sortResultSet(results, prop, query) {
     // prop would be object prop e.g. "title"
     // jaro distance
-    results = (0, _lodash2.default)(results, function (item) {
+    return (0, _lodash2.default)(results, function (item) {
         if (item[prop] == null) {
             return 0;
         }
         // console.log( 'DISTANCE:', distance(item[prop].toLowerCase( ), query.toLowerCase( )) );
         return (0, _jaroWinkler.distance)(item[prop].toLowerCase(), query.toLowerCase());
     });
-
-    // slice to improve performance for sorting and DOM rendering
-    if (limit) {
-        return results.slice(0, limit);
-    }
-
-    return results;
 }
 
 exports.default = sortResultSet;
