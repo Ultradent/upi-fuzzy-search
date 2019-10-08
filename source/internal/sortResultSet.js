@@ -20,7 +20,7 @@ function sortResultSet ( results, prop, query ) {
             return 0;
         }
         // console.log( 'DISTANCE:', distance(item[prop].toLowerCase( ), query.toLowerCase( )) );
-        return distance( item[prop].toLowerCase(), query.toLowerCase() );
+        return distance( String( item[prop] ).toLowerCase(), String( query ).toLowerCase() );
     } );
 }
 
