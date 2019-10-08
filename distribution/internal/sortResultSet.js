@@ -31,7 +31,7 @@ function sortResultSet(results, prop, query) {
             return 0;
         }
         // console.log( 'DISTANCE:', distance(item[prop].toLowerCase( ), query.toLowerCase( )) );
-        return (0, _jaroWinkler.distance)(item[prop].toLowerCase(), query.toLowerCase());
+        return (0, _jaroWinkler.distance)(String(item[prop]).toLowerCase(), String(query).toLowerCase());
     });
 }
 
