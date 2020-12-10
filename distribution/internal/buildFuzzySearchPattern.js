@@ -72,7 +72,7 @@ var buildFuzzySearchPattern = (0, _memoize2.default)(function fuzzySearchPattern
     pattern.push('.*');
 
     // console.log( 'Fuzzy pattern for query:', q, pattern.join( '' ) );
-    return new RegExp(pattern.join(''), 'i');
+    return new RegExp(pattern.join(''), 'mi');
 });
 
 exports.default = buildFuzzySearchPattern;
