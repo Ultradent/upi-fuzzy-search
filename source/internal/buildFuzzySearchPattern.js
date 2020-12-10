@@ -64,8 +64,8 @@ const buildFuzzySearchPattern = memoize( function fuzzySearchPattern( q ) {
     pattern.push( '.*' );
 
     // console.log( 'Fuzzy pattern for query:', q, pattern.join( '' ) );
-    return new RegExp( pattern.join( '' ), 'i' );
+    return new RegExp( pattern.join( '' ), 'mi' );
 
-});
+} );
 
 export default buildFuzzySearchPattern;
