@@ -1,6 +1,6 @@
 {
   "name": "@ultradent/upi-fuzzy-search",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "simple search utility for creating fuzzy search contexts from a defined collection that can then be queried by properties",
   "main": "distribution/index.js",
   "repository": {
