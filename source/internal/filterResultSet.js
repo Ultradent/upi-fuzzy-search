@@ -3,8 +3,13 @@
  * @param str [Any]
  * @returns {string}
  */
-function propToString( str ) {
+
+function propToString ( str ) {
     let s = str;
+
+    if ( typeof s === 'undefined' ) {
+        s = '';
+    }
 
     if ( typeof s === 'number' ) {
         s = String( s );
@@ -42,7 +47,7 @@ const matchInQuery = ( props, pattern ) => item => {
     return criteria.trim().match( pattern );
 };
 
-function filterResultSet( results, pattern, props = [] ) {
+function filterResultSet ( results, pattern, props = [] ) {
     const isMatch = matchInQuery( props, pattern );
 
     return results.filter( isMatch );
