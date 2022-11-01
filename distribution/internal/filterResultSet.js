@@ -11,8 +11,13 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @param str [Any]
  * @returns {string}
  */
+
 function propToString(str) {
     var s = str;
+
+    if (typeof s === 'undefined') {
+        s = '';
+    }
 
     if (typeof s === 'number') {
         s = String(s);
