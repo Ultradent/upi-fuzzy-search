@@ -1,5 +1,6 @@
 import compose from 'ramda/src/compose';
 import prop from 'ramda/src/prop';
+import sortWith from 'ramda/src/sortWith';
 import sortBy from 'ramda/src/sortBy';
 import filter from 'ramda/src/filter';
 import allPass from 'ramda/src/allPass';
@@ -16,14 +17,46 @@ import sortResultSet from './internal/sortResultSet';
 function createSearchContext ( initialModel, props = [] ) {
     const sortByFirstProp = sortBy( prop( props[0] ) );
     const composeFilters = compose( filter, allPass );
+    const composeSortInstructions = (sortProps) => {
+        const sortInstructions = sortProps.map( ({property, direction}) => {
+            const sortDirection = direction === 'asc' ? ascend : descend;
+            return sortDirection(prop(property))
+        });
+
+        return sortWith(sortInstructions);
+    }
 
     let _$cache = {};
     let _modelSorted = sortByFirstProp( initialModel );
     let _model = _modelSorted;
 
     return {
+        /**
+         * Expects an array of strings or a single string to specify property and direction to sort by  eg. ['age:desc', 'name:asc']
+         * @param sorts
+         * @returns {null}
+         */
+        setSorting ( sorts ) {
+            if ( !sorts ) {
+                console.warn( '[Upi.FuzzySearch] Attempted to set sorting with no sorts provided' );
+                return null;
+            }
+            const _sorts = Array.isArray( sorts ) ? sorts : [sorts];
+            const sortProps = _sorts.map( sort => {
+                const [prop, dir] = sort.split( ':' );
+                return {property: prop, direction: dir || 'asc'};
+            });
+
+            const applySorting = composeSortInstructions(sortProps);
+
+            // update model / clear cache
+            _model = applySorting(_modelSorted);
+            _$cache = {};
+        },
+
         setFilters ( filters ) {
             if ( !filters ) {
+                console.warn( '[Upi.FuzzySearch] Attempted to set filters with no filters provided' );
                 return null;
             }
 
