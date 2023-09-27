@@ -29,6 +29,7 @@ function createSearchContext ( initialModel, props = [] ) {
     }
 
     let _$cache = {};
+    // let _mixins = [];
     let _modelSorted = sortByFirstProp( initialModel );
     let _model = _modelSorted;
 
@@ -52,7 +53,7 @@ function createSearchContext ( initialModel, props = [] ) {
             const applySorting = composeSortInstructions(sortProps);
 
             // update model / clear cache
-            _model = applySorting(_modelSorted);
+            _modelSorted = applySorting(_modelSorted);
             _$cache = {};
         },
 
@@ -71,6 +72,11 @@ function createSearchContext ( initialModel, props = [] ) {
             _model = applyFilters( _modelSorted );
             _$cache = {};
         },
+
+        // todo: implement mixins in place of filters and sorting
+        // applyMixins ( mixins ) {
+        //     _$cache = {};
+        // },
 
         query: function search ( q ) {
             const

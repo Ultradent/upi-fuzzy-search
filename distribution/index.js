@@ -77,6 +77,7 @@ function createSearchContext(initialModel) {
     };
 
     var _$cache = {};
+    // let _mixins = [];
     var _modelSorted = sortByFirstProp(initialModel);
     var _model = _modelSorted;
 
@@ -104,7 +105,7 @@ function createSearchContext(initialModel) {
             var applySorting = composeSortInstructions(sortProps);
 
             // update model / clear cache
-            _model = applySorting(_modelSorted);
+            _modelSorted = applySorting(_modelSorted);
             _$cache = {};
         },
         setFilters: function setFilters(filters) {
@@ -125,6 +126,11 @@ function createSearchContext(initialModel) {
             _$cache = {};
         },
 
+
+        // todo: implement mixins in place of filters and sorting
+        // applyMixins ( mixins ) {
+        //     _$cache = {};
+        // },
 
         query: function search(q) {
             var query = q.toLowerCase(),
