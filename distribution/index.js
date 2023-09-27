@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.createSearchContext = undefined;
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _compose = require('ramda/src/compose');
 
 var _compose2 = _interopRequireDefault(_compose);
@@ -12,6 +14,10 @@ var _compose2 = _interopRequireDefault(_compose);
 var _prop = require('ramda/src/prop');
 
 var _prop2 = _interopRequireDefault(_prop);
+
+var _sortWith = require('ramda/src/sortWith');
+
+var _sortWith2 = _interopRequireDefault(_sortWith);
 
 var _sortBy = require('ramda/src/sortBy');
 
@@ -50,14 +56,52 @@ function createSearchContext(initialModel) {
 
     var sortByFirstProp = (0, _sortBy2.default)((0, _prop2.default)(props[0]));
     var composeFilters = (0, _compose2.default)(_filter2.default, _allPass2.default);
+    var composeSortInstructions = function composeSortInstructions(sortProps) {
+        var sortInstructions = sortProps.map(function (_ref) {
+            var property = _ref.property,
+                direction = _ref.direction;
+
+            var sortDirection = direction === 'asc' ? ascend : descend;
+            return sortDirection((0, _prop2.default)(property));
+        });
+
+        return (0, _sortWith2.default)(sortInstructions);
+    };
 
     var _$cache = {};
     var _modelSorted = sortByFirstProp(initialModel);
     var _model = _modelSorted;
 
     return {
+        /**
+         * Expects an array of strings or a single string to specify property and direction to sort by  eg. ['age:desc', 'name:asc']
+         * @param sorts
+         * @returns {null}
+         */
+        setSorting: function setSorting(sorts) {
+            if (!sorts) {
+                console.warn('[Upi.FuzzySearch] Attempted to set sorting with no sorts provided');
+                return null;
+            }
+            var _sorts = Array.isArray(sorts) ? sorts : [sorts];
+            var sortProps = _sorts.map(function (sort) {
+                var _sort$split = sort.split(':'),
+                    _sort$split2 = _slicedToArray(_sort$split, 2),
+                    prop = _sort$split2[0],
+                    dir = _sort$split2[1];
+
+                return { property: prop, direction: dir || 'asc' };
+            });
+
+            var applySorting = composeSortInstructions(sortProps);
+
+            // update model / clear cache
+            _model = applySorting(_modelSorted);
+            _$cache = {};
+        },
         setFilters: function setFilters(filters) {
             if (!filters) {
+                console.warn('[Upi.FuzzySearch] Attempted to set filters with no filters provided');
                 return null;
             }
 
