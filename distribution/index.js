@@ -19,6 +19,14 @@ var _sortWith = require('ramda/src/sortWith');
 
 var _sortWith2 = _interopRequireDefault(_sortWith);
 
+var _ascend = require('ramda/src/ascend');
+
+var _ascend2 = _interopRequireDefault(_ascend);
+
+var _descend = require('ramda/src/descend');
+
+var _descend2 = _interopRequireDefault(_descend);
+
 var _sortBy = require('ramda/src/sortBy');
 
 var _sortBy2 = _interopRequireDefault(_sortBy);
@@ -61,7 +69,7 @@ function createSearchContext(initialModel) {
             var property = _ref.property,
                 direction = _ref.direction;
 
-            var sortDirection = direction === 'asc' ? ascend : descend;
+            var sortDirection = direction === 'asc' ? _ascend2.default : _descend2.default;
             return sortDirection((0, _prop2.default)(property));
         });
 
